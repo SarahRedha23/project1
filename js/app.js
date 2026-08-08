@@ -41,14 +41,20 @@ function createBoard(){
 }
 
 function handleKeyPress(event){
+    console.log(event.key)
     if(gameOver){
         return
     }
     const key = event.key.toUpperCase()
 
-    if(key.length === 1 && key >= "A" && key <= "Z"){
+     if(key === "BACKSPACE"){
+        removeLetter()
+     }else if(key === "ENTER"){
+        submitGuess()
+     } else if(key.length === 1 && key >= "A" && key <= "Z"){
         addLetter(key)
     }
+
 }
 
 function addLetter(letter){
@@ -62,12 +68,27 @@ function addLetter(letter){
 function updateBoard(){
     const tiles = boardEl.querySelectorAll(".tile")
 
-    for(let index = 0; index < currentGuess.length; index++){
+    for(let index = 0; index < COLS; index++){
         const tileindex = currentRow * COLS + index
-        tiles[tileindex].textContent = currentGuess[index]
+        tiles[tileindex].textContent = currentGuess[index] || ""
     }
 }
 
+function removeLetter(){
+    if(currentGuess.length === 0){
+        return
+    }
+    currentGuess = currentGuess.slice(0, -1)
+    updateBoard()
+}
+
+function submitGuess(){
+    if(currentGuess.length !== COLS){
+        messageEl.textContent = "Word must be 5 letters"
+        return
+    }
+    messageEl.textContent =    `You guessed ${currentGuess}`
+}
 /*----------------------------- Event Listeners ------------------------------*/
 
 init()
