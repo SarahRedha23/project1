@@ -9,7 +9,7 @@ Makes sizing easier to manage. */
 body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: whitesmoke;
-    color: #003399 ;
+    color: black ;
     min-height: 100vh;
 }
 
