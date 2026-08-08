@@ -27,3 +27,22 @@ body {
     font-size: 2rem;
     font-weight: bold;
 }
+
+#board{
+    display: grid;
+    grid-template-columns: repeat(5, 60px);
+    grid-template-rows: repeat(6,60px);
+    gap: 5px
+}
+
+.tile{
+    border: 2px solid #3a3a3c;
+    height: 60px;
+    width: 60px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+}
