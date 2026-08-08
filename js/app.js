@@ -40,7 +40,37 @@ function createBoard(){
     }
 }
 
+function handleKeyPress(event){
+    if(gameOver){
+        return
+    }
+    const key = event.key.toUpperCase()
+
+    if(key.length === 1 && key >= "A" && key <= "Z"){
+        addLetter(key)
+    }
+}
+
+function addLetter(letter){
+    if (currentGuess.length >= COLS){
+        return
+    }
+    currentGuess += letter
+    updateBoard()
+}
+
+function updateBoard(){
+    const tiles = boardEl.querySelectorAll(".tile")
+
+    for(let index = 0; index < currentGuess.length; index++){
+        const tileindex = currentRow * COLS + index
+        tiles[tileindex].textContent = currentGuess[index]
+    }
+}
+
 /*----------------------------- Event Listeners ------------------------------*/
 
 init()
 createBoard()
+
+document.addEventListener("keydown", handleKeyPress)
