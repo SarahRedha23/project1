@@ -41,7 +41,6 @@ function createBoard(){
 }
 
 function handleKeyPress(event){
-    console.log(event.key)
     if(gameOver){
         return
     }
@@ -87,7 +86,15 @@ function submitGuess(){
         messageEl.textContent = "Word must be 5 letters"
         return
     }
+    if (!isValidWord()){
+        messageEl.textContent = "Not a valid word"
+        return
+    }
     messageEl.textContent =    `You guessed ${currentGuess}`
+}
+
+function isValidWord() {
+    return words.includes(currentGuess)
 }
 /*----------------------------- Event Listeners ------------------------------*/
 
