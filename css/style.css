@@ -27,11 +27,56 @@ main {
 
     border-bottom: 2px solid #3a3a3c;
 }
+.nav-links a {
+    color: black;
+    text-decoration: none;
+}
 
 .logo {
     font-size: 2rem;
     font-weight: bold;
 }
+
+#instructions {
+    max-width: 600px;
+    margin: 25px auto;
+    padding: 20px;
+    text-align: left;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+#instructions h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#instructions h3 {
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+#instructions p {
+    margin: 5px 0;
+}
+
+#instructions ul {
+    margin-top: 5px;
+}
+
+.example-green {
+    color: green;
+}
+
+.example-yellow {
+    color: #b59f00;
+}
+
+.example-gray {
+    color: gray;
+}
+
+
 #board {
     display: grid;
     grid-template-columns: repeat(5, 60px);
