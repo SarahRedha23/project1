@@ -4,22 +4,28 @@ const COLS = 5
 
 
 /*---------------------------- Variables (state) -----------------------------*/
-let mysteryWord 
-let currentGuess
-let currentRow
-let gameOver
+
+let mysteryWord
+let currentGuess = ""
+let currentRow = 0
+let gameOver = false
 
 /*------------------------ Cached Element References -------------------------*/
-
+const instructionsEl = document.querySelector("#instructions")
+const howToPlayBtn = document.querySelector("#how-to-play-btn")
 const boardEl = document.querySelector("#board")
 const keyboardEl = document.querySelector("#keyboard")
 const messageEl = document.querySelector("#message")
-const restartBin = document.querySelector("#restart-btn")
+const restartBtn = document.querySelector("#restart-btn")
 
 /*-------------------------------- Functions --------------------------------*/
+howToPlayBtn.addEventListener("click", function(event){
+       event.preventDefault()
+       instructionsEl.classList.toggle("hidden")
+   })
 
 function init() {
-    mysteryWord = words[Math.floor(Math.random() * words.length)]
+    mysteryWord = "APPLE"
 
     currentGuess = ""
     currentRow = 0
@@ -28,17 +34,6 @@ function init() {
     messageEl.textContent = "Good Luck!"
 }
 
-function createBoard(){
-    for(let row =0; row < ROWS; row++){
-            for(let col = 0; col < COLS; col++){
-            
-             const tile = document.createElement("div")
-             tile.classList.add("tile")
-             boardEl.appendChild(tile)    
-    }
-        
-    }
-}
 
 function handleKeyPress(event){
     if(gameOver){
@@ -64,12 +59,13 @@ function addLetter(letter){
     updateBoard()
 }
 
-function updateBoard(){
+function updateBoard() {
     const tiles = boardEl.querySelectorAll(".tile")
 
-    for(let index = 0; index < COLS; index++){
-        const tileindex = currentRow * COLS + index
-        tiles[tileindex].textContent = currentGuess[index] || ""
+    for (let index = 0; index < COLS; index++) {
+        const tileIndex = currentRow * COLS + index
+
+        tiles[tileIndex].textContent = currentGuess[index] || ""
     }
 }
 
@@ -81,24 +77,91 @@ function removeLetter(){
     updateBoard()
 }
 
-function submitGuess(){
-    if(currentGuess.length !== COLS){
+function submitGuess() {
+    if (currentGuess.length !== COLS) {
         messageEl.textContent = "Word must be 5 letters"
         return
     }
-    if (!isValidWord()){
+
+    if (!isValidWord()) {
         messageEl.textContent = "Not a valid word"
         return
     }
-    messageEl.textContent =    `You guessed ${currentGuess}`
+
+    // Correct guess
+    if (currentGuess === mysteryWord) {
+        gameOver = true
+        messageEl.textContent = "You won! 🎉"
+        return
+    }
+
+    // Wrong valid guess
+    currentRow++
+    currentGuess = ""
+
+    // Player used all 6 attempts
+    if (currentRow === ROWS) {
+        gameOver = true
+        messageEl.textContent = `You lose! The word was ${mysteryWord}`
+        return
+    }
+
+    messageEl.textContent = "Try again!"
 }
 
 function isValidWord() {
     return words.includes(currentGuess)
 }
+
+
+
+   function restartGame() {
+    const tiles = boardEl.querySelectorAll(".tile")
+
+    tiles.forEach(function(tile) {
+        tile.textContent = ""
+        tile.className = "tile"
+    })
+
+    init()
+}
+
+
+function createKeyboard() {
+    const keys = [
+        "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
+        "A", "S", "D", "F", "G", "H", "J", "K", "L",
+        "ENTER",
+        "Z", "X", "C", "V", "B", "N", "M",
+        "BACKSPACE"
+    ]
+
+    keys.forEach(function(key) {
+        const button = document.createElement("button")
+
+        button.textContent = key
+        button.classList.add("key")
+
+        keyboardEl.appendChild(button)
+    })
+}
+function handleKeyboardClick(event) {
+    const key = event.target.textContent
+
+    if (key === "ENTER") {
+        submitGuess()
+    } else if (key === "BACKSPACE") {
+        removeLetter()
+    } else {
+        addLetter(key)
+    }
+}
 /*----------------------------- Event Listeners ------------------------------*/
 
 init()
-createBoard()
+createKeyboard()
+
 
 document.addEventListener("keydown", handleKeyPress)
+restartBtn.addEventListener("click", restartGame)
+keyboardEl.addEventListener("click", handleKeyboardClick)
