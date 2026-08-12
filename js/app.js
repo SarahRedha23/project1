@@ -96,6 +96,7 @@ function submitGuess() {
     }
     const statuses = getLetterStatuses()
     updateTileColor(statuses)
+    updateKeyboardColors(statuses)
 
     if (currentGuess === mysteryWord) {
         gameOver = true
@@ -154,6 +155,33 @@ function updateTileColor(statuses){
     }
 }
 
+function updateKeyboardColors(statuses){
+const rank = {
+    absent:1,
+     present:2,
+      correct:3}
+
+const buttons = keyboardEl.querySelectorAll(".key")
+
+for(let index =0 ; index < COLS; index++){
+    const letter = currentGuess[index]
+    const newStatus = statuses[index]
+
+     buttons.forEach(function(button)
+{if (button.textContent !== letter) return 
+    const currentStatus = button.dataset.status 
+    if(!currentStatus || rank[newStatus] >  rank[currentStatus]){
+
+ if(currentStatus){
+    button.classList.remove(currentStatus)
+ }
+ button.classList.add(newStatus)
+ button.dataset.status = newStatus
+}
+})
+}
+}
+
 
 
 function restartGame() {
@@ -162,6 +190,10 @@ function restartGame() {
     tiles.forEach(function(tile) {
         tile.textContent = ""
         tile.className = "tile"
+    })
+    buttons.forEach(function(button){
+        button.className= "key"
+        button.dataset.status = ""
     })
 
     init()
