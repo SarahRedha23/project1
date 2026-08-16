@@ -17,8 +17,11 @@ const instructionsEl = document.querySelector("#instructions")
 const howToPlayBtn = document.querySelector("#how-to-play-btn")
 const boardEl = document.querySelector("#board")
 const keyboardEl = document.querySelector("#keyboard")
-const messageEl = document.querySelector("#message")
-const restartBtn = document.querySelector("#restart-btn")
+
+const popupEl = document.querySelector("#game-popup")
+const popupTitleEl = document.querySelector("#popup-title")
+const popupMessageEl = document.querySelector("#popup-message")
+const popupBtn = document.querySelector("#popup-btn")
 
 /*-------------------------------- Functions --------------------------------*/
 
@@ -34,8 +37,6 @@ function init() {
     currentGuess = ""
     currentRow = 0
     gameOver = false
-
-    messageEl.textContent = "Good Luck!"
 }
 
 function handleKeyPress(event) {
@@ -84,23 +85,24 @@ function removeLetter() {
 
 function submitGuess() {
     if (currentGuess.length !== COLS) {
-        messageEl.textContent = "Word must be 5 letters"
+        showPopup("Invalid Guess", "Word must be 5 letters")
         return
     }
 
     if (!isValidWord()) {
-        messageEl.textContent = "Not a valid word"
+        showPopup("Invalid Guess", "That is not a valid word")
         currentGuess = ""
         updateBoard()
         return
     }
+
     const statuses = getLetterStatuses()
     updateTileColor(statuses)
     updateKeyboardColors(statuses)
 
     if (currentGuess === mysteryWord) {
         gameOver = true
-        messageEl.textContent = "You won! 🎉"
+        showPopup("You Won!", "You did it!", true)
         return
     }
 
@@ -109,12 +111,12 @@ function submitGuess() {
 
     if (currentRow === ROWS) {
         gameOver = true
-        messageEl.textContent = `You lose! The word was ${mysteryWord}`
+        showPopup("You Lost", `The word was ${mysteryWord}`, true)
         return
     }
-
-    messageEl.textContent = "Try again!"
 }
+
+
 
 function isValidWord() {
     return WORDS.includes(currentGuess.toLowerCase())
@@ -124,7 +126,7 @@ function getLetterStatuses() {
     const statuses = new Array(COLS).fill("absent")
     const mysteryLetters = mysteryWord.split("")
 
-    // First pass: check for exact matches
+   
     for (let i = 0; i < COLS; i++) {
         if (currentGuess[i] === mysteryWord[i]) {
             statuses[i] = "correct"
@@ -132,7 +134,6 @@ function getLetterStatuses() {
         }
     }
 
-    // Second pass: check for letters in the wrong position
     for (let i = 0; i < COLS; i++) {
         if (statuses[i] === "correct") continue
 
@@ -186,16 +187,19 @@ for(let index =0 ; index < COLS; index++){
 
 function restartGame() {
     const tiles = boardEl.querySelectorAll(".tile")
+    const buttons = keyboardEl.querySelectorAll(".key")
 
     tiles.forEach(function(tile) {
         tile.textContent = ""
         tile.className = "tile"
     })
-    buttons.forEach(function(button){
-        button.className= "key"
+
+    buttons.forEach(function(button) {
+        button.className = "key"
         button.dataset.status = ""
     })
 
+    closePopup()
     init()
 }
 
@@ -203,16 +207,19 @@ function createKeyboard() {
     const keys = [
         "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
         "A", "S", "D", "F", "G", "H", "J", "K", "L",
-        "ENTER",
-        "Z", "X", "C", "V", "B", "N", "M",
-        "BACKSPACE"
+        "Z", "ENTER", "X", "C", "V", "B", "N", "M","BACKSPACE"
     ]
+
 
     keys.forEach(function(key) {
         const button = document.createElement("button")
 
         button.textContent = key
         button.classList.add("key")
+
+       if (key === "ENTER" || key === "BACKSPACE") {
+            button.classList.add("wide-key")
+        }
 
         keyboardEl.appendChild(button)
     })
@@ -234,13 +241,35 @@ function handleKeyboardClick(event) {
     }
 }
 
+function showPopup(title, message, isGameOver= false) {
+    popupTitleEl.textContent = title
+    popupMessageEl.textContent = message
+
+popupBtn.textContent = isGameOver? "Play Again" : "OK"
+
+    popupEl.classList.remove("hidden")
+}
+
+function closePopup() {
+    popupEl.classList.add("hidden")
+}
+
 
 
 /*----------------------------- Event Listeners ------------------------------*/
 
 init()
 createKeyboard()
-
+showPopup("Good Luck!", "Try to guess the mystery word!")
 document.addEventListener("keydown", handleKeyPress)
-restartBtn.addEventListener("click", restartGame)
 keyboardEl.addEventListener("click", handleKeyboardClick)
+
+popupBtn.addEventListener("click", function(){
+   if (gameOver){
+ restartGame()
+}else{
+    closePopup()
+}
+
+
+})
