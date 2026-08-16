@@ -85,7 +85,7 @@ function removeLetter() {
 
 function submitGuess() {
     if (currentGuess.length !== COLS) {
-        showPopup("Invalid Guess", "Word must be 5 letters")
+        showPopup("Invalid Guess", "Please enter a 5 letter word.")
         return
     }
 
@@ -102,7 +102,7 @@ function submitGuess() {
 
     if (currentGuess === mysteryWord) {
         gameOver = true
-        showPopup("You Won!", "You did it!", true)
+        showPopup("You Won!", "You guessed the mystery word!", true)
         return
     }
 
@@ -111,7 +111,7 @@ function submitGuess() {
 
     if (currentRow === ROWS) {
         gameOver = true
-        showPopup("You Lost", `The word was ${mysteryWord}`, true)
+        showPopup("You Lost:(", `The word was ${mysteryWord}`, true)
         return
     }
 }
