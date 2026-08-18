@@ -193,7 +193,7 @@ function restartGame() {
     })
 
     buttons.forEach(function(button) {
-        button.className = "key"
+        button.classList.remove("correct", "present", "absent")
         button.dataset.status = ""
     })
 
@@ -202,12 +202,14 @@ function restartGame() {
 }
 
 function createKeyboard() {
-    keyboardEl.innerHTML=""
     const keyboardRows = [
         ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
         ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
         ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "BACKSPACE"]
     ]
+
+        keyboardEl.innerHTML=""
+
         keyboardRows.forEach(function(rowKeys) {
         const rowDiv = document.createElement("div")
         rowDiv.classList.add("keyboard-row")

@@ -128,21 +128,23 @@ main {
 #keyboard {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
     gap: 8px;
-    max-width: 500px;
-    margin: 20px auto;
+    width: max-content;
+    margin: 0 auto;
 }
 
 .keyboard-row {
-display: flex;
+    display: flex;
     justify-content: center;
     gap: 6px;
-    width: 100%;
+    width: max-content;
 }
 
-.key{width: 40px;
+.key {
+    width: 40px;
     height: 58px;
+    flex-shrink: 0;
     border-radius: 4px;
     border: none;
     background-color: #d3d6da;
@@ -152,9 +154,11 @@ display: flex;
 }
 
 .wide-key {
+    width: 83px;
     min-width: 83px;
     padding: 0 8px;
     font-size: 12px;
+    flex-shrink: 0;
 }
 .key.correct {
     background-color: #6aaa64;
