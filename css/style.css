@@ -127,15 +127,21 @@ main {
 
 #keyboard {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
     max-width: 500px;
     margin: 20px auto;
 }
 
-.key {
-    width: 40px;
+.keyboard-row {
+display: flex;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+}
+
+.key{width: 40px;
     height: 58px;
     border-radius: 4px;
     border: none;
@@ -145,11 +151,10 @@ main {
     cursor: pointer;
 }
 
-/* Makes the 21st key (ENTER) and 29th key (BACKSPACE) wider */
-.key:nth-child(21),
-.key:nth-child(28) {
-    width: 65px;
-    font-size: 11px;
+.wide-key {
+    min-width: 83px;
+    padding: 0 8px;
+    font-size: 12px;
 }
 .key.correct {
     background-color: #6aaa64;

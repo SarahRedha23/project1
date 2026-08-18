@@ -24,7 +24,7 @@ const popupMessageEl = document.querySelector("#popup-message")
 const popupBtn = document.querySelector("#popup-btn")
 
 /*-------------------------------- Functions --------------------------------*/
-
+// The how to play button in the nav
 howToPlayBtn.addEventListener("click", function(event) {
     event.preventDefault()
     instructionsEl.classList.toggle("hidden")
@@ -85,7 +85,7 @@ function removeLetter() {
 
 function submitGuess() {
     if (currentGuess.length !== COLS) {
-        showPopup("Invalid Guess", "Please enter a 5 letter word.")
+        showPopup("Please enter a 5 letter word.")
         return
     }
 
@@ -102,7 +102,7 @@ function submitGuess() {
 
     if (currentGuess === mysteryWord) {
         gameOver = true
-        showPopup("You Won!", "You guessed the mystery word!", true)
+        showPopup("🎉You Won🎉", "You guessed the mystery word!", true)
         return
     }
 
@@ -111,7 +111,7 @@ function submitGuess() {
 
     if (currentRow === ROWS) {
         gameOver = true
-        showPopup("You Lost:(", `The word was ${mysteryWord}`, true)
+        showPopup("You Lost🙄", `The word was ${mysteryWord}`, true)
         return
     }
 }
@@ -183,8 +183,6 @@ for(let index =0 ; index < COLS; index++){
 }
 }
 
-
-
 function restartGame() {
     const tiles = boardEl.querySelectorAll(".tile")
     const buttons = keyboardEl.querySelectorAll(".key")
@@ -204,26 +202,32 @@ function restartGame() {
 }
 
 function createKeyboard() {
-    const keys = [
-        "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
-        "A", "S", "D", "F", "G", "H", "J", "K", "L",
-        "Z", "ENTER", "X", "C", "V", "B", "N", "M","BACKSPACE"
+    keyboardEl.innerHTML=""
+    const keyboardRows = [
+        ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+        ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+        ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "BACKSPACE"]
     ]
+        keyboardRows.forEach(function(rowKeys) {
+        const rowDiv = document.createElement("div")
+        rowDiv.classList.add("keyboard-row")
 
+        rowKeys.forEach(function(key) {
+            const button = document.createElement("button")
+            button.textContent = key
+            button.classList.add("key")
 
-    keys.forEach(function(key) {
-        const button = document.createElement("button")
+            if (key === "ENTER" || key === "BACKSPACE") {
+                button.classList.add("wide-key")
+            }
 
-        button.textContent = key
-        button.classList.add("key")
+            rowDiv.appendChild(button)
+        })
 
-       if (key === "ENTER" || key === "BACKSPACE") {
-            button.classList.add("wide-key")
-        }
-
-        keyboardEl.appendChild(button)
+        keyboardEl.appendChild(rowDiv)
     })
 }
+
 
 function handleKeyboardClick(event) {
     if (gameOver) {
