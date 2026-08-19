@@ -24,14 +24,13 @@ const popupMessageEl = document.querySelector("#popup-message")
 const popupBtn = document.querySelector("#popup-btn")
 
 /*-------------------------------- Functions --------------------------------*/
-// The how to play button in the nav
 howToPlayBtn.addEventListener("click", function(event) {
     event.preventDefault()
     instructionsEl.classList.toggle("hidden")
 })
 
 function init() {
-    const randomIndex = Math.floor(Math.random() * WORDS.length)
+   const randomIndex = Math.floor(Math.random() * WORDS.length)
 
     mysteryWord = WORDS[randomIndex].toUpperCase()
     currentGuess = ""
@@ -164,7 +163,7 @@ const rank = {
 
 const buttons = keyboardEl.querySelectorAll(".key")
 
-for(let index =0 ; index < COLS; index++){
+for(let index = 0 ; index < COLS; index++){
     const letter = currentGuess[index]
     const newStatus = statuses[index]
 
